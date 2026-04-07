@@ -3,6 +3,7 @@
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import Earth from "./Earth";
 import Moon from "./Moon";
@@ -40,6 +41,15 @@ export default function Scene() {
             minDistance={3}
             maxDistance={200}
           />
+          <EffectComposer>
+            <Bloom
+              intensity={1.5}
+              luminanceThreshold={0.6}
+              luminanceSmoothing={0.9}
+              mipmapBlur
+            />
+            <Vignette offset={0.3} darkness={0.7} />
+          </EffectComposer>
         </Suspense>
       </Canvas>
     </div>
