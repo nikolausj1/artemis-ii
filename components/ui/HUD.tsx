@@ -19,7 +19,7 @@ export default function HUD() {
   const progressPercent = ((met / TOTAL_MISSION_DURATION_HOURS) * 100).toFixed(1);
 
   return (
-    <div className="absolute top-4 right-4 pointer-events-none">
+    <div>
       <div className="rounded-xl bg-black/60 backdrop-blur-md border border-white/10 p-4 w-56">
         {/* MET */}
         <div className="mb-3">

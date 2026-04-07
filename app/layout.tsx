@@ -8,8 +8,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Artemis II Mission Tracker",
     description:
-      "Interactive 3D orbit visualization of NASA's Artemis II lunar mission.",
+      "Interactive 3D orbit visualization of NASA's Artemis II lunar mission. Real-time tracking of the first crewed flight around the Moon since 1972.",
     type: "website",
+    images: ["/og-image.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Artemis II Mission Tracker",
+    description:
+      "Interactive 3D orbit visualization of NASA's Artemis II lunar mission.",
+    images: ["/og-image.png"],
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
 };
 

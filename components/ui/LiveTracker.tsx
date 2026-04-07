@@ -45,7 +45,7 @@ export default function LiveTracker() {
 
   if (collapsed) {
     return (
-      <div className="absolute top-4 right-64 pointer-events-auto">
+      <div>
         <button
           onClick={() => setCollapsed(false)}
           className="flex items-center gap-2 rounded-lg bg-black/60 backdrop-blur-md border border-white/10 px-3 py-2"
@@ -62,7 +62,7 @@ export default function LiveTracker() {
   }
 
   return (
-    <div className="absolute top-4 right-64 pointer-events-auto w-72">
+    <div className="w-64">
       <div className="rounded-xl bg-black/60 backdrop-blur-md border border-white/10 p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">

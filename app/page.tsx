@@ -18,12 +18,29 @@ export default function Home() {
         <Scene />
       </Suspense>
 
-      {/* UI overlay layer - pointer-events-none so clicks pass to 3D scene */}
+      {/* UI overlay layer */}
       <div className="absolute inset-0 pointer-events-none">
-        <PhaseCard />
-        <HUD />
-        <LiveTracker />
-        <CrewPanel />
+        {/* Top-left: Phase card (hidden on very small screens) */}
+        <div className="hidden sm:block">
+          <PhaseCard />
+        </div>
+
+        {/* Top-right area: HUD + LiveTracker stacked */}
+        <div className="absolute top-4 right-4 pointer-events-none flex flex-col gap-3 items-end">
+          <div className="pointer-events-auto">
+            <HUD />
+          </div>
+          <div className="pointer-events-auto">
+            <LiveTracker />
+          </div>
+        </div>
+
+        {/* Bottom-left: Crew panel (hidden on mobile) */}
+        <div className="hidden md:block">
+          <CrewPanel />
+        </div>
+
+        {/* Bottom: Timeline */}
         <Timeline />
       </div>
     </main>
