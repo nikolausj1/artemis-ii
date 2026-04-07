@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import Timeline from "@/components/ui/Timeline";
 import PhaseCard from "@/components/ui/PhaseCard";
-import CrewPanel from "@/components/ui/CrewPanel";
 import HUD from "@/components/ui/HUD";
 import LiveTracker from "@/components/ui/LiveTracker";
 import LoadingScreen from "@/components/ui/LoadingScreen";
@@ -18,14 +17,14 @@ export default function Home() {
         <Scene />
       </Suspense>
 
-      {/* UI overlay layer */}
+      {/* UI overlay */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Top-left: Phase card (hidden on very small screens) */}
+        {/* Top-left: Phase card */}
         <div className="hidden sm:block">
           <PhaseCard />
         </div>
 
-        {/* Top-right area: HUD + LiveTracker stacked */}
+        {/* Top-right: HUD + LiveTracker stacked */}
         <div className="absolute top-4 right-4 pointer-events-none flex flex-col gap-3 items-end">
           <div className="pointer-events-auto">
             <HUD />
@@ -33,11 +32,6 @@ export default function Home() {
           <div className="pointer-events-auto">
             <LiveTracker />
           </div>
-        </div>
-
-        {/* Bottom-left: Crew panel (hidden on mobile) */}
-        <div className="hidden md:block">
-          <CrewPanel />
         </div>
 
         {/* Bottom: Timeline */}

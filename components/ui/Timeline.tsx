@@ -5,6 +5,20 @@ import { useMissionStore } from "@/lib/store";
 import { MISSION_PHASES } from "@/lib/mission-data";
 import { TOTAL_MISSION_DURATION_HOURS, PLAYBACK_SPEEDS } from "@/lib/constants";
 
+// Clean phase labels
+const PHASE_LABELS: Record<string, string> = {
+  launch: "Launch",
+  tli: "TLI",
+  outbound_coast_1: "Coast",
+  outbound_coast_2: "Coast",
+  lunar_influence: "Approach",
+  lunar_flyby: "Flyby",
+  return_coast_1: "Return",
+  return_coast_2: "Return",
+  return_coast_3: "Return",
+  reentry: "Splashdown",
+};
+
 function formatMET(hours: number): string {
   const totalSeconds = Math.floor(hours * 3600);
   const d = Math.floor(totalSeconds / 86400);
@@ -45,70 +59,108 @@ export default function Timeline() {
 
   return (
     <div className="absolute bottom-0 left-0 right-0 pointer-events-auto">
-      <div className="mx-4 mb-4 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 px-4 py-3">
-        {/* Phase segments bar */}
+      <div className="mx-4 mb-4 rounded-xl bg-black/70 backdrop-blur-md border border-white/10 px-5 py-4">
+
+        {/* Phase labels row */}
+        <div className="flex mb-1.5">
+          {MISSION_PHASES.map((phase) => {
+            const width =
+              ((phase.endMET - phase.startMET) / TOTAL_MISSION_DURATION_HOURS) * 100;
+            const isActive = phase.id === activePhase.id;
+            return (
+              <div
+                key={phase.id}
+                className="text-center overflow-hidden"
+                style={{ width: `${width}%` }}
+              >
+                {width > 6 && (
+                  <span
+                    className={`text-[9px] tracking-wide uppercase transition-colors ${
+                      isActive ? "text-cyan-300" : "text-white/30"
+                    }`}
+                  >
+                    {PHASE_LABELS[phase.id] || phase.name}
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Progress bar */}
         <div
-          className="relative h-8 rounded-md overflow-hidden cursor-pointer mb-3"
+          className="relative h-2 rounded-full bg-white/5 cursor-pointer mb-1"
           onClick={handleScrub}
           onMouseMove={handleScrubDrag}
         >
-          {/* Phase color segments */}
-          <div className="absolute inset-0 flex">
-            {MISSION_PHASES.map((phase) => {
-              const width =
-                ((phase.endMET - phase.startMET) / TOTAL_MISSION_DURATION_HOURS) * 100;
-              return (
-                <button
-                  key={phase.id}
-                  className="h-full relative group transition-opacity hover:opacity-100"
-                  style={{
-                    width: `${width}%`,
-                    backgroundColor: phase.color,
-                    opacity: phase.id === activePhase.id ? 1 : 0.4,
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActivePhase(phase);
-                  }}
-                  title={phase.name}
-                >
-                  {width > 8 && (
-                    <span className="absolute inset-0 flex items-center justify-center text-[9px] font-medium text-white/90 truncate px-1">
-                      D{phase.day}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Progress indicator */}
+          {/* Filled progress */}
           <div
-            className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_6px_rgba(255,255,255,0.8)] z-10"
+            className="absolute top-0 left-0 h-full rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400 transition-none"
+            style={{ width: `${progress}%` }}
+          />
+
+          {/* Phase boundary markers */}
+          {MISSION_PHASES.slice(1).map((phase) => {
+            const pos = (phase.startMET / TOTAL_MISSION_DURATION_HOURS) * 100;
+            return (
+              <div
+                key={phase.id + "_mark"}
+                className="absolute top-0 bottom-0 w-px bg-white/10"
+                style={{ left: `${pos}%` }}
+              />
+            );
+          })}
+
+          {/* Playhead */}
+          <div
+            className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.6)] z-10 -ml-1.5"
             style={{ left: `${progress}%` }}
           />
         </div>
 
+        {/* Day markers */}
+        <div className="flex mb-3">
+          {MISSION_PHASES.map((phase) => {
+            const width =
+              ((phase.endMET - phase.startMET) / TOTAL_MISSION_DURATION_HOURS) * 100;
+            const isActive = phase.id === activePhase.id;
+            return (
+              <button
+                key={phase.id + "_day"}
+                className={`text-center overflow-hidden transition-colors ${
+                  isActive ? "text-white/60" : "text-white/15"
+                }`}
+                style={{ width: `${width}%` }}
+                onClick={() => setActivePhase(phase)}
+              >
+                <span className="text-[8px] font-mono">
+                  Apr {phase.day}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
         {/* Controls row */}
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between">
           {/* Play/Pause + Speed */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button
               onClick={togglePlayback}
-              className="w-8 h-8 flex items-center justify-center rounded-md bg-white/10 hover:bg-white/20 transition-colors text-white"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white text-sm"
             >
               {isPlaying ? "⏸" : "▶"}
             </button>
 
-            <div className="flex gap-1">
+            <div className="flex gap-0.5 bg-white/5 rounded-md p-0.5">
               {PLAYBACK_SPEEDS.map((speed) => (
                 <button
                   key={speed}
                   onClick={() => setSpeed(speed)}
-                  className={`px-2 py-1 rounded text-xs font-mono transition-colors ${
+                  className={`px-2.5 py-1 rounded text-[10px] font-mono transition-colors ${
                     playbackSpeed === speed
-                      ? "bg-white/20 text-white"
-                      : "text-white/40 hover:text-white/70"
+                      ? "bg-cyan-500/20 text-cyan-300"
+                      : "text-white/30 hover:text-white/60"
                   }`}
                 >
                   {speed}x
@@ -118,20 +170,14 @@ export default function Timeline() {
           </div>
 
           {/* MET display */}
-          <div className="font-mono text-sm text-white/80 tracking-wider">
-            <span className="text-white/40 text-xs mr-2">MET</span>
-            {formatMET(met)}
+          <div className="font-mono text-white/70 tracking-wider">
+            <span className="text-white/30 text-[10px] mr-2 uppercase tracking-widest">MET</span>
+            <span className="text-sm">{formatMET(met)}</span>
           </div>
 
-          {/* Current phase label */}
-          <div className="flex items-center gap-2">
-            <div
-              className="w-2 h-2 rounded-full"
-              style={{ backgroundColor: activePhase.color }}
-            />
-            <span className="text-xs text-white/70 max-w-[180px] truncate">
-              {activePhase.name}
-            </span>
+          {/* Active phase name */}
+          <div className="text-xs text-white/40">
+            Day {activePhase.day} &mdash; {activePhase.name}
           </div>
         </div>
       </div>

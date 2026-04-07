@@ -20,48 +20,48 @@ export default function HUD() {
 
   return (
     <div>
-      <div className="rounded-xl bg-black/60 backdrop-blur-md border border-white/10 p-4 w-56">
-        {/* MET */}
-        <div className="mb-3">
-          <p className="text-[10px] text-white/40 uppercase tracking-wider mb-1">
+      <div className="rounded-xl bg-black/60 backdrop-blur-md border border-white/10 p-5 w-64">
+        {/* MET - large and prominent */}
+        <div className="mb-4">
+          <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1.5">
             Mission Elapsed Time
           </p>
-          <p className="font-mono text-lg text-white tracking-wider">
+          <p className="font-mono text-2xl text-white tracking-wider leading-none">
             {formatMET(met)}
           </p>
         </div>
 
-        {/* Stats */}
-        <div className="space-y-2 border-t border-white/10 pt-3">
+        {/* Stats grid */}
+        <div className="grid grid-cols-2 gap-3 border-t border-white/10 pt-3">
           <div>
-            <p className="text-[10px] text-white/40 uppercase tracking-wider">
-              Distance from Earth
+            <p className="text-[9px] text-white/30 uppercase tracking-wider mb-0.5">
+              From Earth
             </p>
-            <p className="font-mono text-xs text-white/80">
+            <p className="font-mono text-[11px] text-white/70">
               {activePhase.stats.distanceFromEarth}
             </p>
           </div>
           <div>
-            <p className="text-[10px] text-white/40 uppercase tracking-wider">
-              Distance from Moon
+            <p className="text-[9px] text-white/30 uppercase tracking-wider mb-0.5">
+              From Moon
             </p>
-            <p className="font-mono text-xs text-white/80">
+            <p className="font-mono text-[11px] text-white/70">
               {activePhase.stats.distanceFromMoon}
             </p>
           </div>
           <div>
-            <p className="text-[10px] text-white/40 uppercase tracking-wider">
+            <p className="text-[9px] text-white/30 uppercase tracking-wider mb-0.5">
               Velocity
             </p>
-            <p className="font-mono text-xs text-white/80">
+            <p className="font-mono text-[11px] text-white/70">
               {activePhase.stats.velocity}
             </p>
           </div>
           <div>
-            <p className="text-[10px] text-white/40 uppercase tracking-wider">
-              Mission Progress
+            <p className="text-[9px] text-white/30 uppercase tracking-wider mb-0.5">
+              Progress
             </p>
-            <p className="font-mono text-xs text-white/80">{progressPercent}%</p>
+            <p className="font-mono text-[11px] text-white/70">{progressPercent}%</p>
           </div>
         </div>
       </div>
