@@ -41,7 +41,7 @@ export default function Scene() {
           <Starfield />
           <CameraController />
           <PlaybackTick />
-          <EffectComposer>
+          <EffectComposer multisampling={0}>
             <Bloom
               intensity={1.5}
               luminanceThreshold={0.6}
