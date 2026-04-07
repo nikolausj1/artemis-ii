@@ -80,6 +80,8 @@ export const useMissionStore = create<MissionStore>((set, get) => {
   // Always start at 0 to avoid hydration mismatch. LiveTracker syncs to real time on mount.
   const initialMET = 0;
   const initialPhase = getPhaseForMET(initialMET);
+  // Override initial camera to wide shot so user sees everything on load
+  const initialCamera: CameraPresetId = "wide_shot";
 
   return {
     met: initialMET,
@@ -115,7 +117,7 @@ export const useMissionStore = create<MissionStore>((set, get) => {
     setActivePhase: (phase) =>
       set({ activePhase: phase, met: phase.startMET, activeCameraPreset: phase.cameraPreset }),
 
-    activeCameraPreset: initialPhase.cameraPreset,
+    activeCameraPreset: initialCamera,
     setCameraPreset: (id) => set({ activeCameraPreset: id }),
     isTransitioning: false,
     setIsTransitioning: (v) => set({ isTransitioning: v }),

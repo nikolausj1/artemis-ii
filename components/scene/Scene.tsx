@@ -13,6 +13,7 @@ import Spacecraft from "./Spacecraft";
 import Atmosphere from "./Atmosphere";
 import CameraController from "./CameraController";
 import PlaybackTick from "./PlaybackTick";
+import SceneLabels from "./SceneLabels";
 
 export default function Scene() {
   // Ensure client-only rendering
@@ -39,6 +40,7 @@ export default function Scene() {
           <Trajectory />
           <Spacecraft />
           <Starfield />
+          <SceneLabels />
           <CameraController />
           <PlaybackTick />
           <EffectComposer multisampling={0}>

@@ -17,7 +17,7 @@ export default function CameraController() {
   const transitionProgress = useRef(1);
   const startPos = useRef(new THREE.Vector3());
   const startLookAt = useRef(new THREE.Vector3());
-  const lastPresetId = useRef("");
+  const lastPresetId = useRef("wide_shot");
   const idleTimer = useRef(0);
 
   const activeCameraPreset = useMissionStore((s) => s.activeCameraPreset);
