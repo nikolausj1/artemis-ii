@@ -2,7 +2,6 @@
 
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import Earth from "./Earth";
@@ -11,6 +10,8 @@ import Starfield from "./Starfield";
 import Lighting from "./Lighting";
 import Trajectory from "./Trajectory";
 import Spacecraft from "./Spacecraft";
+import Atmosphere from "./Atmosphere";
+import CameraController from "./CameraController";
 import PlaybackTick from "./PlaybackTick";
 
 function LoadingFallback() {
@@ -36,17 +37,13 @@ export default function Scene() {
         <Suspense fallback={<LoadingFallback />}>
           <Lighting />
           <Earth />
+          <Atmosphere />
           <Moon />
           <Trajectory />
           <Spacecraft />
           <Starfield />
+          <CameraController />
           <PlaybackTick />
-          <OrbitControls
-            enableDamping
-            dampingFactor={0.05}
-            minDistance={3}
-            maxDistance={200}
-          />
           <EffectComposer>
             <Bloom
               intensity={1.5}
