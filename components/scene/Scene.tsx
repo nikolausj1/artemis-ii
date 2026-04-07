@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
@@ -14,27 +14,24 @@ import Atmosphere from "./Atmosphere";
 import CameraController from "./CameraController";
 import PlaybackTick from "./PlaybackTick";
 
-function LoadingFallback() {
-  return (
-    <mesh>
-      <sphereGeometry args={[0.5, 16, 16]} />
-      <meshBasicMaterial color="#88eeff" wireframe />
-    </mesh>
-  );
-}
-
 export default function Scene() {
+  // Ensure client-only rendering
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  if (!mounted) return null;
+
   return (
-    <div className="w-full h-full">
+    <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}>
       <Canvas
         camera={{ position: [20, 25, 45], fov: 45, near: 0.1, far: 1000 }}
         gl={{
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.2,
+          antialias: true,
         }}
         style={{ background: "#000008" }}
       >
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={null}>
           <Lighting />
           <Earth />
           <Atmosphere />

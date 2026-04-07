@@ -77,8 +77,8 @@ interface MissionStore {
 }
 
 export const useMissionStore = create<MissionStore>((set, get) => {
-  const status = getMissionStatus();
-  const initialMET = status === "live" ? getRealTimeMET() : 0;
+  // Always start at 0 to avoid hydration mismatch. LiveTracker syncs to real time on mount.
+  const initialMET = 0;
   const initialPhase = getPhaseForMET(initialMET);
 
   return {
@@ -120,13 +120,13 @@ export const useMissionStore = create<MissionStore>((set, get) => {
     isTransitioning: false,
     setIsTransitioning: (v) => set({ isTransitioning: v }),
 
-    crewPanelOpen: false,
+    crewPanelOpen: true,
     toggleCrewPanel: () => set((s) => ({ crewPanelOpen: !s.crewPanelOpen })),
 
-    missionStatus: status,
-    currentActivity: getCurrentActivity(),
-    nextActivity: getNextActivity(),
-    realTimeMET: getRealTimeMET(),
+    missionStatus: "pre-launch" as const, // Will be updated on client mount by LiveTracker
+    currentActivity: null,
+    nextActivity: null,
+    realTimeMET: 0,
     syncToRealTime: () => {
       const realMET = getRealTimeMET();
       set({

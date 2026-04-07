@@ -34,9 +34,12 @@ export default function LiveTracker() {
     return () => clearInterval(interval);
   }, [updateLiveStatus]);
 
-  // Auto-sync to real time on first load during mission
+  // Auto-sync to real time on first load
   useEffect(() => {
-    if (missionStatus === "live") {
+    // Update status first, then sync if live
+    updateLiveStatus();
+    const status = useMissionStore.getState().missionStatus;
+    if (status === "live") {
       syncToRealTime();
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
