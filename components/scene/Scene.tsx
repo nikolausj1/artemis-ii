@@ -9,6 +9,9 @@ import Earth from "./Earth";
 import Moon from "./Moon";
 import Starfield from "./Starfield";
 import Lighting from "./Lighting";
+import Trajectory from "./Trajectory";
+import Spacecraft from "./Spacecraft";
+import PlaybackTick from "./PlaybackTick";
 
 function LoadingFallback() {
   return (
@@ -34,7 +37,10 @@ export default function Scene() {
           <Lighting />
           <Earth />
           <Moon />
+          <Trajectory />
+          <Spacecraft />
           <Starfield />
+          <PlaybackTick />
           <OrbitControls
             enableDamping
             dampingFactor={0.05}
